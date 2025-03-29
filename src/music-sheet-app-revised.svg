@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+  <!-- Background -->
+  <rect width="800" height="800" fill="#f8f9fa"/>
+  
+  <!-- App Frame -->
+  <rect x="40" y="20" width="720" height="760" rx="10" fill="white" stroke="#dee2e6" stroke-width="2"/>
+  
+  <!-- App Header -->
+  <rect x="40" y="20" width="720" height="70" rx="10" fill="#6c5ce7" stroke="#dee2e6" stroke-width="0"/>
+  <text x="60" y="63" font-family="Arial" font-size="22" font-weight="bold" fill="white">Music Sheet Cloud</text>
+  
+  <!-- Navigation Elements -->
+  <rect x="400" y="35" width="80" height="40" rx="5" fill="#5a46e1" stroke="none"/>
+  <text x="422" y="60" font-family="Arial" font-size="14" font-weight="bold" fill="white">Edit</text>
+  
+  <rect x="490" y="35" width="80" height="40" rx="5" fill="#5a46e1" stroke="none"/>
+  <text x="512" y="60" font-family="Arial" font-size="14" font-weight="bold" fill="white">Play</text>
+  
+  <rect x="580" y="35" width="80" height="40" rx="5" fill="#5a46e1" stroke="none"/>
+  <text x="597" y="60" font-family="Arial" font-size="14" font-weight="bold" fill="white">Export</text>
+  
+  <rect x="670" y="35" width="40" height="40" rx="5" fill="#5a46e1" stroke="none"/>
+  <text x="683" y="60" font-family="Arial" font-size="18" font-weight="bold" fill="white">⎙</text>
+  
+  <!-- Song Header Section - More Spacing -->
+  <rect x="60" y="110" width="680" height="120" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  
+  <!-- Left Side Information -->
+  <text x="80" y="140" font-family="Arial" font-size="15" fill="#495057">Artist Name:</text>
+  <rect x="80" y="150" width="250" height="30" rx="4" fill="white" stroke="#ced4da" stroke-width="1"/>
+  <text x="90" y="170" font-family="Arial" font-size="16" font-weight="bold" fill="#212529">Tyagaraja</text>
+  
+  <text x="80" y="200" font-family="Arial" font-size="15" fill="#495057">Album/Collection:</text>
+  <rect x="80" y="210" width="250" height="30" rx="4" fill="white" stroke="#ced4da" stroke-width="1"/>
+  <text x="90" y="230" font-family="Arial" font-size="16" font-weight="bold" fill="#212529">Pancharatna Kritis</text>
+  
+  <!-- Right Side Information -->
+  <text x="400" y="140" font-family="Arial" font-size="15" fill="#495057">Raga (Aarohana/Avarohana):</text>
+  <rect x="400" y="150" width="320" height="30" rx="4" fill="white" stroke="#ced4da" stroke-width="1"/>
+  <text x="410" y="170" font-family="Arial" font-size="16" font-weight="bold" fill="#212529">Shankarabharanam</text>
+  
+  <text x="400" y="200" font-family="Arial" font-size="15" fill="#495057">Tempo (Taala):</text>
+  <rect x="400" y="210" width="320" height="30" rx="4" fill="white" stroke="#ced4da" stroke-width="1"/>
+  <text x="410" y="230" font-family="Arial" font-size="16" font-weight="bold" fill="#212529">Adi (8 beats)</text>
+  
+  <!-- Section Headers with Cloud Icon -->
+  <!-- Pallavi Section -->
+  <rect x="60" y="250" width="680" height="40" rx="8" fill="#4b7bec" stroke="none"/>
+  <text x="90" y="277" font-family="Arial" font-size="18" font-weight="bold" fill="white">Pallavi</text>
+  <text x="630" y="277" font-family="Arial" font-size="18" fill="white">☁ Saved</text>
+  
+  <!-- Music Lines - Pallavi - Increased Spacing -->
+  <!-- First Music Line Section -->
+  <rect x="60" y="300" width="680" height="140" rx="0" fill="white" stroke="#dee2e6" stroke-width="1"/>
+  
+  <!-- Line Separators - More Visible -->
+  <rect x="60" y="335" width="680" height="1" fill="#ced4da"/>
+  <rect x="60" y="370" width="680" height="1" fill="#ced4da"/>
+  <rect x="60" y="405" width="680" height="1" fill="#ced4da"/>
+  
+  <!-- Line 1 - Notes -->
+  <text x="80" y="325" font-family="Arial" font-size="16" fill="#212529">S R G M P D N Ṡ  |  Ṡ N D P M G R S</text>
+  
+  <!-- Line 2 - Chords -->
+  <text x="80" y="360" font-family="Arial" font-size="16" fill="#495057">C  Dm  Em  F   |  G  F  Em Dm C</text>
+  
+  <!-- Line 3 - Lyrics -->
+  <text x="80" y="395" font-family="Arial" font-size="16" fill="#212529">Endaro Mahanubhavulu Andariki Vandanamulu</text>
+  
+  <!-- Second Music Line Section with more spacing -->
+  <rect x="60" y="450" width="680" height="140" rx="0" fill="white" stroke="#dee2e6" stroke-width="1"/>
+  
+  <!-- Line Separators - More Visible -->
+  <rect x="60" y="485" width="680" height="1" fill="#ced4da"/>
+  <rect x="60" y="520" width="680" height="1" fill="#ced4da"/>
+  <rect x="60" y="555" width="680" height="1" fill="#ced4da"/>
+  
+  <!-- Line 1 - Notes -->
+  <text x="80" y="475" font-family="Arial" font-size="16" fill="#212529">P M G R S N, D,  |  S R G M P D</text>
+  
+  <!-- Line 2 - Chords -->
+  <text x="80" y="510" font-family="Arial" font-size="16" fill="#495057">F  Em Dm C  Bm  |  C  Dm Em F  G</text>
+  
+  <!-- Line 3 - Lyrics -->
+  <text x="80" y="545" font-family="Arial" font-size="16" fill="#212529">Chandariki Vandanamulu</text>
+  
+  <!-- Anupallavi Section (Just showing the heading) -->
+  <rect x="60" y="600" width="680" height="40" rx="8" fill="#a55eea" stroke="none"/>
+  <text x="90" y="627" font-family="Arial" font-size="18" font-weight="bold" fill="white">Anupallavi</text>
+  <text x="640" y="627" font-family="Arial" font-size="18" fill="white">☁︎</text>
+  
+  <!-- Charanam indicator (showing it would follow) -->
+  <rect x="60" y="650" width="680" height="40" rx="8" fill="#fed330" stroke="none"/>
+  <text x="90" y="677" font-family="Arial" font-size="18" font-weight="bold" fill="white">Charanam</text>
+  
+  <!-- Cloud Storage Status -->
+  <rect x="40" y="745" width="720" height="35" rx="0" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text x="60" y="768" font-family="Arial" font-size="14" fill="#212529">Last saved: 29 March 2025, 10:42 AM • Auto-sync enabled</text>
+  <rect x="650" y="750" width="90" height="25" rx="12" fill="#4cd137" stroke="none"/>
+  <text x="666" y="767" font-family="Arial" font-size="12" font-weight="bold" fill="white">✓ SYNCED</text>
+</svg>

@@ -1,30 +1,43 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Box } from '@mui/material';
 import { Factory, StaveNote, Formatter } from 'vexflow';
 import { Note } from '../types/music';
 
-interface MusicNotationProps {
+interface MusicSheetProps {
   notes: Note[];
   onChange?: (notes: Note[]) => void;
 }
 
-const MusicNotation: React.FC<MusicNotationProps> = ({
-  notes,
-  onChange,
-}) => {
+const MusicSheet: React.FC<MusicSheetProps> = ({ notes, onChange }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [vf, setVf] = useState<Factory | null>(null);
+  const [context, setContext] = useState<any>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const vf = new Factory({
-      renderer: { elementId: 'music-notation', width: 800, height: 200 },
+    const factory = new Factory({
+      renderer: { elementId: 'music-sheet', width: 800, height: 200 },
     });
 
-    const context = vf.getContext();
+    setVf(factory);
+    setContext(factory.getContext());
+
+    return () => {
+      factory.getContext().clear();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!context || !vf) return;
+
+    // Clear previous content
+    context.clear();
+
+    // Create a new stave
     const stave = vf.Stave({ x: 10, y: 40, width: 780 });
 
-    // Add treble clef and time signature
+    // Add clef and time signature
     stave.addClef('treble');
     stave.addTimeSignature('4/4');
 
@@ -52,11 +65,17 @@ const MusicNotation: React.FC<MusicNotationProps> = ({
     // Draw the stave
     stave.setContext(context).draw();
 
-    // Cleanup
-    return () => {
-      context.clear();
-    };
-  }, [notes]);
+    // Add lyrics if available
+    if (notes.length > 0) {
+      context.addLyrics(vexflowNotes, vexflowNotes.map((_, i: number) => `Lyric ${i + 1}`));
+    }
+
+    // Add tempo marking
+    context.save();
+    context.setFont('Arial', 12);
+    context.fillText('Tempo: 120', 10, 20);
+    context.restore();
+  }, [context, vf, notes]);
 
   return (
     <Box
@@ -69,9 +88,9 @@ const MusicNotation: React.FC<MusicNotationProps> = ({
         justifyContent: 'center',
       }}
     >
-      <div id="music-notation" />
+      <div id="music-sheet" />
     </Box>
   );
 };
 
-export default MusicNotation; 
+export default MusicSheet; 

@@ -1,170 +1,219 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
 import {
   Box,
-  Paper,
   Grid,
+  Paper,
   Typography,
+  IconButton,
   Button,
-  Tabs,
-  Tab,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  useTheme,
+  useMediaQuery,
+  Collapse,
 } from '@mui/material';
-import MusicNotation from './MusicNotation';
-import ChordProgression from './ChordProgression';
-import LyricsSection from './LyricsSection';
-import SongMetadata from './SongMetadata';
+import {
+  Add as AddIcon,
+  ArrowBack as ArrowBackIcon,
+} from '@mui/icons-material';
+import { Song, SongSection } from '../types/music';
+import { SongMetadata } from './SongMetadata';
+import { MusicLine } from './MusicLine';
+import { SectionHeader } from './SectionHeader';
 
-interface SongData {
-  title: string;
-  artist: string;
-  album: string;
-  notationType: 'carnatic' | 'western';
-  aarohana: string;
-  avarohana: string;
-  tempo: string;
-  timeSignature: string;
-  sections: {
-    pallavi: string;
-    anupallavi: string;
-    charanam: string;
-  };
-  chords: string[];
+interface SongEditorProps {
+  song: Song;
+  onChange: (song: Song) => void;
+  onBack?: () => void;
 }
 
-const SongEditor: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const [songData, setSongData] = useState<SongData>({
-    title: '',
-    artist: '',
-    album: '',
-    notationType: 'western',
-    aarohana: '',
-    avarohana: '',
-    tempo: '120',
-    timeSignature: '4/4',
-    sections: {
-      pallavi: '',
-      anupallavi: '',
-      charanam: '',
-    },
-    chords: ['', '', '', ''],
-  });
-  const [activeTab, setActiveTab] = useState(0);
+export const SongEditor: React.FC<SongEditorProps> = ({ song, onChange, onBack }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [sections, setSections] = useState<SongSection[]>(song.sections);
+  const [isEditing, setIsEditing] = useState(false);
+  const [newSectionName, setNewSectionName] = useState('');
+  const [isNewSectionDialogOpen, setIsNewSectionDialogOpen] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<boolean[]>(sections.map(() => true));
 
-  useEffect(() => {
-    // TODO: Load song data if id exists
-    if (id) {
-      // Load song data from backend
+  const handleLineChange = (sectionIndex: number, lineIndex: number, field: 'notes' | 'chords' | 'lyrics', value: string) => {
+    const newSections = [...sections];
+    newSections[sectionIndex].lines[lineIndex][field] = value;
+    setSections(newSections);
+    onChange({ ...song, sections: newSections });
+  };
+
+  const handleAddLine = (sectionIndex: number) => {
+    const newSections = [...sections];
+    newSections[sectionIndex].lines.push({
+      notes: '',
+      chords: '',
+      lyrics: '',
+    });
+    setSections(newSections);
+    onChange({ ...song, sections: newSections });
+  };
+
+  const handleDeleteLine = (sectionIndex: number, lineIndex: number) => {
+    const newSections = [...sections];
+    newSections[sectionIndex].lines.splice(lineIndex, 1);
+    setSections(newSections);
+    onChange({ ...song, sections: newSections });
+  };
+
+  const handleAddSection = () => {
+    setIsNewSectionDialogOpen(true);
+  };
+
+  const handleConfirmNewSection = () => {
+    if (newSectionName.trim()) {
+      const newSection: SongSection = {
+        name: newSectionName.trim(),
+        lines: [],
+      };
+      const newSections = [...sections, newSection];
+      setSections(newSections);
+      onChange({ ...song, sections: newSections });
+      setNewSectionName('');
+      setIsNewSectionDialogOpen(false);
     }
-  }, [id]);
-
-  const handleInputChange = (field: keyof SongData, value: string) => {
-    setSongData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSectionChange = (section: keyof SongData['sections'], value: string) => {
-    setSongData((prev) => ({
-      ...prev,
-      sections: { ...prev.sections, [section]: value },
-    }));
+  const handleDeleteSection = (sectionIndex: number) => {
+    const newSections = sections.filter((_, index) => index !== sectionIndex);
+    setSections(newSections);
+    onChange({ ...song, sections: newSections });
   };
 
-  const handleChordsChange = (chords: string[]) => {
-    setSongData((prev) => ({ ...prev, chords }));
-  };
-
-  const handleSave = () => {
-    // TODO: Implement save functionality
-    console.log('Saving song:', songData);
-  };
-
-  const getActiveSection = () => {
-    switch (activeTab) {
-      case 0:
-        return 'pallavi';
-      case 1:
-        return 'anupallavi';
-      case 2:
-        return 'charanam';
-      default:
-        return 'pallavi';
-    }
+  const handleToggleSection = (sectionIndex: number) => {
+    const newExpandedSections = [...expandedSections];
+    newExpandedSections[sectionIndex] = !newExpandedSections[sectionIndex];
+    setExpandedSections(newExpandedSections);
   };
 
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
-        {id ? 'Edit Song' : 'New Song'}
-      </Typography>
-
-      <SongMetadata
-        title={songData.title}
-        artist={songData.artist}
-        album={songData.album}
-        notationType={songData.notationType}
-        aarohana={songData.aarohana}
-        avarohana={songData.avarohana}
-        tempo={songData.tempo}
-        timeSignature={songData.timeSignature}
-        onChange={(field, value) => handleInputChange(field as keyof SongData, value)}
-      />
-
-      <Tabs
-        value={activeTab}
-        onChange={(_, newValue) => setActiveTab(newValue)}
-        sx={{ mb: 2 }}
+    <Box
+      sx={{
+        minHeight: '100vh',
+        backgroundImage: 'url("/music-sheet-bg.svg")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+        py: { xs: 1, sm: 2 },
+      }}
+    >
+      <Box
+        sx={{
+          maxWidth: { xs: '100%', sm: 1200 },
+          mx: 'auto',
+          px: { xs: 1, sm: 2 },
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          borderRadius: 2,
+          backdropFilter: 'blur(10px)',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        }}
       >
-        <Tab label="Pallavi" />
-        <Tab label="Anupallavi" />
-        <Tab label="Charanam" />
-      </Tabs>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+          <IconButton 
+            onClick={onBack}
+            sx={{ 
+              mr: 2,
+              color: '#1976d2',
+              '&:hover': { bgcolor: 'rgba(25, 118, 210, 0.1)' }
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography variant="h5" component="h2">
+            {song.title || 'Untitled Song'}
+          </Typography>
+        </Box>
 
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 2, height: '400px' }}>
-            <Typography variant="h6" gutterBottom>
-              Notes
-            </Typography>
-            <Box sx={{ height: 'calc(100% - 40px)' }}>
-              <MusicNotation
-                notationType={songData.notationType}
-                notes={[]} // TODO: Add actual notes
-                timeSignature={songData.timeSignature}
-              />
-            </Box>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 2, height: '400px' }}>
-            <Typography variant="h6" gutterBottom>
-              Chords
-            </Typography>
-            <Box sx={{ height: 'calc(100% - 40px)' }}>
-              <ChordProgression
-                chords={songData.chords}
-                onChange={handleChordsChange}
-              />
-            </Box>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 2, height: '400px' }}>
-            <LyricsSection
-              section={getActiveSection()}
-              lyrics={songData.sections[getActiveSection()]}
-              onChange={(value) => handleSectionChange(getActiveSection(), value)}
-            />
-          </Paper>
-        </Grid>
-      </Grid>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <SongMetadata song={song} onChange={onChange} />
+          </Grid>
 
-      <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-        <Button variant="contained" color="primary" onClick={handleSave}>
-          Save Song
-        </Button>
+          <Grid item xs={12}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              {sections.map((section, sectionIndex) => (
+                <Paper
+                  key={sectionIndex}
+                  elevation={0}
+                  sx={{
+                    position: 'relative',
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    borderRadius: 1,
+                    overflow: 'hidden',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                  }}
+                >
+                  <SectionHeader
+                    title={section.name}
+                    isEditing={isEditing}
+                    onEdit={() => setIsEditing(!isEditing)}
+                    onDelete={() => handleDeleteSection(sectionIndex)}
+                    onAdd={() => handleAddLine(sectionIndex)}
+                    expanded={expandedSections[sectionIndex]}
+                    onToggleExpand={() => handleToggleSection(sectionIndex)}
+                  />
+
+                  <Collapse in={expandedSections[sectionIndex]}>
+                    <Box sx={{ p: 1.5 }}>
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                        {section.lines.map((line, lineIndex) => (
+                          <MusicLine
+                            key={lineIndex}
+                            lineNumber={lineIndex + 1}
+                            notes={line.notes}
+                            chords={line.chords}
+                            lyrics={line.lyrics}
+                            isEditable={isEditing}
+                            onNotesChange={(value) => handleLineChange(sectionIndex, lineIndex, 'notes', value)}
+                            onChordsChange={(value) => handleLineChange(sectionIndex, lineIndex, 'chords', value)}
+                            onLyricsChange={(value) => handleLineChange(sectionIndex, lineIndex, 'lyrics', value)}
+                            onDelete={() => handleDeleteLine(sectionIndex, lineIndex)}
+                          />
+                        ))}
+                      </Box>
+                    </Box>
+                  </Collapse>
+                </Paper>
+              ))}
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
+
+      <Dialog
+        open={isNewSectionDialogOpen}
+        onClose={() => setIsNewSectionDialogOpen(false)}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle>Add New Section</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Section Name"
+            fullWidth
+            size="small"
+            value={newSectionName}
+            onChange={(e) => setNewSectionName(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsNewSectionDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleConfirmNewSection} variant="contained" color="primary">
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
-};
-
-export default SongEditor; 
+}; 
