@@ -47,17 +47,10 @@ export interface Chord {
   duration: number;
 }
 
-export interface Song {
-  id?: string;
-  title: string;
-  artist: string;
-  album: string;
-  notationType: 'carnatic' | 'western';
-  aarohana: string;
-  avarohana: string;
-  tempo: string;
-  timeSignature: string;
-  sections: SongSection[];
+export interface SongLine {
+  notes: string;
+  chords: string;
+  lyrics: string;
 }
 
 export interface SongSection {
@@ -65,15 +58,17 @@ export interface SongSection {
   lines: SongLine[];
 }
 
-export interface SongLine {
-  notes: string;
-  chords: string;
-  lyrics: string;
-}
-
-export interface MusicNotationProps {
-  notes: Note[];
-  onChange?: (notes: Note[]) => void;
+export interface Song {
+  id: string;
+  title: string;
+  artist: string;
+  album: string;
+  notationType: 'western' | 'carnatic' | 'hindustani';
+  aarohana: string;
+  avarohana: string;
+  tempo: string;
+  timeSignature: string;
+  sections: SongSection[];
 }
 
 export interface ChordProgressionProps {

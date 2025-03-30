@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Container, CssBaseline } from '@mui/material';
-import { SongEditor } from './components/SongEditor';
+import SongEditor from './components/SongEditor';
 import { LandingPage } from './components/LandingPage';
-import { Song } from './types/music';
+import { Song, SongSection } from './types/music';
 
 const App: React.FC = () => {
   const [songs, setSongs] = useState<Song[]>([
@@ -103,15 +103,24 @@ const App: React.FC = () => {
     setSelectedSong(null);
   };
 
+  const handleSaveSong = (song: Song) => {
+    setSongs(prevSongs => 
+      prevSongs.map(s => 
+        s.id === song.id ? song : s
+      )
+    );
+    setSelectedSong(song);
+  };
+
   return (
     <>
       <CssBaseline />
       <Container maxWidth="lg" sx={{ py: 4 }}>
         {selectedSong ? (
-          <SongEditor 
-            song={selectedSong} 
-            onChange={handleSongChange}
+          <SongEditor
+            song={selectedSong}
             onBack={handleBack}
+            onSave={handleSaveSong}
           />
         ) : (
           <LandingPage

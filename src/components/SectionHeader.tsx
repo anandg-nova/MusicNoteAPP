@@ -15,22 +15,20 @@ import {
 
 interface SectionHeaderProps {
   title: string;
-  isEditing: boolean;
   onEdit: () => void;
   onDelete: () => void;
   onAdd: () => void;
-  expanded: boolean;
   onToggleExpand: () => void;
+  isExpanded: boolean;
 }
 
-export const SectionHeader: React.FC<SectionHeaderProps> = ({
+const SectionHeader: React.FC<SectionHeaderProps> = ({
   title,
-  isEditing,
   onEdit,
   onDelete,
   onAdd,
-  expanded,
   onToggleExpand,
+  isExpanded,
 }) => {
   return (
     <Box
@@ -40,69 +38,49 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         p: 1,
         bgcolor: 'primary.main',
         color: 'white',
+        borderRadius: 1,
+        mb: 1,
       }}
     >
-      <Typography variant="h6" component="h3" sx={{ flexGrow: 1 }}>
+      <Typography variant="h6" sx={{ flexGrow: 1 }}>
         {title}
       </Typography>
-      <Box sx={{ display: 'flex', gap: 0.5 }}>
-        <Tooltip title="Add Line">
+      <Box>
+        <Tooltip title="Edit Section">
           <IconButton
-            size="small"
-            onClick={onAdd}
-            sx={{
-              color: 'white',
-              '&:hover': {
-                bgcolor: 'rgba(255, 255, 255, 0.1)',
-              },
-            }}
+            onClick={onEdit}
+            sx={{ color: 'white', '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' } }}
           >
-            <AddIcon fontSize="small" />
+            <EditIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title={isEditing ? "Save Changes" : "Edit Section"}>
+        <Tooltip title="Add Note">
           <IconButton
-            size="small"
-            onClick={onEdit}
-            sx={{
-              color: 'white',
-              '&:hover': {
-                bgcolor: 'rgba(255, 255, 255, 0.1)',
-              },
-            }}
+            onClick={onAdd}
+            sx={{ color: 'white', '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' } }}
           >
-            <EditIcon fontSize="small" />
+            <AddIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete Section">
           <IconButton
-            size="small"
             onClick={onDelete}
-            sx={{
-              color: 'white',
-              '&:hover': {
-                bgcolor: 'rgba(255, 255, 255, 0.1)',
-              },
-            }}
+            sx={{ color: 'white', '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' } }}
           >
-            <DeleteIcon fontSize="small" />
+            <DeleteIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title={expanded ? "Collapse Section" : "Expand Section"}>
+        <Tooltip title={isExpanded ? "Collapse Section" : "Expand Section"}>
           <IconButton
-            size="small"
             onClick={onToggleExpand}
-            sx={{
-              color: 'white',
-              '&:hover': {
-                bgcolor: 'rgba(255, 255, 255, 0.1)',
-              },
-            }}
+            sx={{ color: 'white', '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' } }}
           >
-            {expanded ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+            {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </IconButton>
         </Tooltip>
       </Box>
     </Box>
   );
-}; 
+};
+
+export default SectionHeader; 
