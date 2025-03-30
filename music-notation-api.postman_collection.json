@@ -1,0 +1,220 @@
+{
+  "info": {
+    "name": "Music Notation API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Get Health Status",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/health",
+            "description": "Get server health status including MongoDB connection and system metrics"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Send OTP",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/send-otp",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"phoneNumber\": \"1234567890\"\n}"
+            },
+            "description": "Send OTP to phone number"
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/verify-otp",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"phoneNumber\": \"1234567890\",\n    \"otp\": \"123456\"\n}"
+            },
+            "description": "Verify OTP and get token"
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/auth/me",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "description": "Get current user details"
+          }
+        },
+        {
+          "name": "Generate Test Token",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/generate-test-token",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"isAdmin\": false\n}"
+            },
+            "description": "Generate a test token (for development only)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Songs",
+      "item": [
+        {
+          "name": "Get All Songs",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/songs",
+            "description": "Get all songs"
+          }
+        },
+        {
+          "name": "Get Song by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/songs/{{songId}}",
+            "description": "Get song by ID"
+          }
+        },
+        {
+          "name": "Create Song",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/songs",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Test Song\",\n    \"artist\": \"Test Artist\",\n    \"album\": \"Test Album\",\n    \"notationType\": \"carnatic\",\n    \"aarohana\": \"S R G M P D N Ṡ\",\n    \"avarohana\": \"Ṡ N D P M G R S\",\n    \"tempo\": \"120\",\n    \"timeSignature\": \"4/4\",\n    \"sections\": [\n        {\n            \"name\": \"Pallavi\",\n            \"order\": 1,\n            \"lines\": [\n                {\n                    \"notes\": \"S R G M\",\n                    \"chords\": \"C Dm Em F\",\n                    \"lyrics\": \"Test lyrics\",\n                    \"order\": 1\n                }\n            ]\n        }\n    ]\n}"
+            },
+            "description": "Create a new song"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Collections",
+      "item": [
+        {
+          "name": "Get All Collections",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/collections",
+            "description": "Get all collections"
+          }
+        },
+        {
+          "name": "Get Collection by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/collections/{{collectionId}}",
+            "description": "Get collection by ID"
+          }
+        },
+        {
+          "name": "Create Collection",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/collections",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Test Collection\",\n    \"description\": \"A test collection\",\n    \"isPublic\": false,\n    \"tags\": [\"test\"]\n}"
+            },
+            "description": "Create a new collection"
+          }
+        },
+        {
+          "name": "Add Song to Collection",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/collections/{{collectionId}}/songs",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"songId\": \"{{songId}}\"\n}"
+            },
+            "description": "Add a song to a collection"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "token",
+      "value": "your_token_here"
+    },
+    {
+      "key": "songId",
+      "value": "67e8e4d527d22530b9bc6a4f"
+    },
+    {
+      "key": "collectionId",
+      "value": "67e8e4f227d22530b9bc6a58"
+    }
+  ]
+} 

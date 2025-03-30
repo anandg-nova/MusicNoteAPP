@@ -1,0 +1,353 @@
+{
+  "info": {
+    "_postman_id": "1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p",
+    "name": "Music Notation API",
+    "description": "API collection for testing the Music Notation application endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Register a new user"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Login with existing credentials"
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            },
+            "description": "Get current user information"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Songs",
+      "item": [
+        {
+          "name": "Get All Songs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/songs",
+              "host": ["{{baseUrl}}"],
+              "path": ["songs"]
+            },
+            "description": "Get all songs for the current user"
+          }
+        },
+        {
+          "name": "Get Song by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/songs/{{songId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["songs", "{{songId}}"]
+            },
+            "description": "Get a specific song by ID"
+          }
+        },
+        {
+          "name": "Create Song",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Endaro Mahanubhavulu\",\n    \"artist\": \"Tyagaraja\",\n    \"album\": \"Pancharatna Kritis\",\n    \"notationType\": \"carnatic\",\n    \"aarohana\": \"S R G M P D N Ṡ\",\n    \"avarohana\": \"Ṡ N D P M G R S\",\n    \"tempo\": \"Adi\",\n    \"timeSignature\": \"4/4\",\n    \"raga\": \"Shankarabharanam\",\n    \"taal\": \"8 beats\",\n    \"sections\": [\n        {\n            \"name\": \"Pallavi\",\n            \"order\": 0,\n            \"lines\": [\n                {\n                    \"notes\": \"S R G M P D N Ṡ  |  Ṡ N D P M G R S\",\n                    \"chords\": \"C  Dm  Em  F   |  G  F  Em Dm C\",\n                    \"lyrics\": \"Endaro Mahanubhavulu Andariki Vandanamulu\",\n                    \"order\": 0\n                }\n            ]\n        }\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/songs",
+              "host": ["{{baseUrl}}"],
+              "path": ["songs"]
+            },
+            "description": "Create a new song"
+          }
+        },
+        {
+          "name": "Update Song",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Updated Song Title\",\n    \"tempo\": \"Updated Tempo\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/songs/{{songId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["songs", "{{songId}}"]
+            },
+            "description": "Update an existing song"
+          }
+        },
+        {
+          "name": "Delete Song",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/songs/{{songId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["songs", "{{songId}}"]
+            },
+            "description": "Delete a song"
+          }
+        },
+        {
+          "name": "Toggle Favorite",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/songs/{{songId}}/favorite",
+              "host": ["{{baseUrl}}"],
+              "path": ["songs", "{{songId}}", "favorite"]
+            },
+            "description": "Toggle favorite status of a song"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Collections",
+      "item": [
+        {
+          "name": "Get All Collections",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/collections",
+              "host": ["{{baseUrl}}"],
+              "path": ["collections"]
+            },
+            "description": "Get all collections for the current user"
+          }
+        },
+        {
+          "name": "Get Collection by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/collections/{{collectionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["collections", "{{collectionId}}"]
+            },
+            "description": "Get a specific collection by ID"
+          }
+        },
+        {
+          "name": "Create Collection",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"My Favorite Songs\",\n    \"description\": \"A collection of my favorite songs\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/collections",
+              "host": ["{{baseUrl}}"],
+              "path": ["collections"]
+            },
+            "description": "Create a new collection"
+          }
+        },
+        {
+          "name": "Update Collection",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Updated Collection Name\",\n    \"description\": \"Updated collection description\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/collections/{{collectionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["collections", "{{collectionId}}"]
+            },
+            "description": "Update an existing collection"
+          }
+        },
+        {
+          "name": "Delete Collection",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/collections/{{collectionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["collections", "{{collectionId}}"]
+            },
+            "description": "Delete a collection"
+          }
+        },
+        {
+          "name": "Add Song to Collection",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/collections/{{collectionId}}/songs/{{songId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["collections", "{{collectionId}}", "songs", "{{songId}}"]
+            },
+            "description": "Add a song to a collection"
+          }
+        },
+        {
+          "name": "Remove Song from Collection",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/collections/{{collectionId}}/songs/{{songId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["collections", "{{collectionId}}", "songs", "{{songId}}"]
+            },
+            "description": "Remove a song from a collection"
+          }
+        }
+      ]
+    }
+  ]
+} 
